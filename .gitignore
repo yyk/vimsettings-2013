@@ -1,0 +1,5 @@
+.VimballRecord
+.netrwhist
+*.pyc
+*.swp
+cache*

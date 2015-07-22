@@ -1,5 +1,13 @@
+call pathogen#infect()
+
+" map CTRL-E to end-of-line (insert mode)
+imap <C-e> <esc>$i<right>
+" map CTRL-A to beginning-of-line (insert mode)
+imap <C-a> <esc>0i
+
 "ABOUT Original settings
-"set backspace=2   "这个太诡异了！，自己编译安装的7.2就需要这句
+set nocompatible  
+set backspace=2   "我的osx就是需要这个，不然backspace无效
 set autoread	"文件从外部发生变化时自动读入
 set modeline
 set autowrite	"切换buffer时自动写入
@@ -9,14 +17,41 @@ set wildmenu "输入命令时按tab能在状态栏显示匹配
 "以下两行能够实现只在活跃窗口当前行下面划线
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
+set history=10000
+set list
+set listchars=tab:,.,trail:.,extends:#,nbsp:.
+
+nnoremap j gj
+nnoremap k gk
+
+" For when you forget to sudo.. Really Write the file. Really good.
+cmap w!! w !sudo tee % >/dev/null
+
+if has('statusline')
+	set laststatus=2
+	set statusline=%<%f\ " Filename
+	set statusline+=%w%h%m%r " Options
+	set statusline+=%{fugitive#statusline()} " Git Hotness
+	set statusline+=\ [%{&ff}/%Y] " Filetype
+	set statusline+=\ [%{getcwd()}] " Current dir
+	set statusline+=%=%-14.(%l,%c%V%)\ %p%% " Right aligned file nav info
+endif
+
+let g:sql_type_default = 'mysql'
 
 set ignorecase "查找时忽略大小写
-set tabstop=4
-set shiftwidth=4
+set smartcase
+set tabstop=2
+set shiftwidth=2
+set expandtab
 set number "显示行号
-colorscheme desert "我修改后的desert主题
 
-"set foldmethod=indent
+syntax enable
+set background=dark
+colorscheme solarized
+colorscheme desert 
+
+set foldmethod=indent
 set foldmethod=marker
 set hlsearch "高亮搜索字
 set incsearch "增量搜索
@@ -32,62 +67,51 @@ syntax on
 "set completeopt=menu,preview
 set completeopt=menu
 
-"about taglist
-let Tlist_Inc_Winwidth=0
-let Tlist_File_Fold_Auto_Close=1
-let Tlist_WinWidth=30
-let Tlist_Use_Right_Window=1
-let Tlist_Use_SingleClick=0
-"let tlist_php_settings = 'php;c:class;i:interfaces;d:const;f:function'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" tagbar
+nmap <F4> :TagbarToggle<CR>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"about minibuf
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" minibuf
 let g:miniBufExplMapWindowNavVim=1 "Ctrl-<hjkl> to move to window
 let g:miniBufExplTabWrap=1 "make tabs show complete (no broken on two lines)
 let g:miniBufExplUseSingleClick=1 "single click to open a tab
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"about some key maps	
-"map <F3> :Ex<CR>
-map <F4> :Tlist<CR>
-map OS :Tlist<CR>
-"minibuf
-"map O1;5D :bp<CR>	
-"map <C-Left> :bp<CR>
-"map <C-H> :bp<CR>
-"map O1;5C :bn<CR>
-"map <C-Right> :bn<CR>
-"map <C-L> :bn<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" key maps	
 map <F3> :NERDTreeToggle<CR>
 map OR :NERDTreeToggle<CR>
-" make it like eclipse
-map <C-W> :wq<CR>
-"map <C-D> dd
-"imap <C-D> <C-O>dd
-"imap <C-U> <C-O>u
-"imap <C-R> <C-O><C-R>
-" navigate using ctrl+hljk in insert mode
-"imap <C-H> <C-O>h
-"imap <C-L> <C-O>l
-"imap <C-J> <C-O>j
-"imap <C-K> <C-O>k
-"imap <C-N> <C-O>j<C-O>OH
-"imap <C-P> <C-O>k<C-O>OF
-" make it like windows
-map <C-A> ggvG<END> "全选
-map <C-C> "+y "复制到系统剪切板
-map  <C-s> :w<CR> "保存
-imap <C-S> <C-O>:w<CR>
-" ctrl+s是terminal的一个feature，会锁住terminal，为达到以上效果需要先执行
-" stty stop ^@
-" make it like visual studio
-"map <C-F7> :wa<CR>:make<CR>
 map <F9> :call EnhancedCommentify('yes', 'guess')<CR>
+"map <C-W> :wq<CR>
+map <C-J> <C-W>j<C-W> 
+map <C-K> <C-W>k<C-W> 
+map <C-L> <C-W>l<C-W> 
+map <C-H> <C-W>h<C-W> 
 
-"""""""""""""""""""""""""""""""""""""
-" 	about better use of cscope 	   "
-"""""""""""""""""""""""""""""""""""""
-"from :help cscope 如果文件夹下有cscope.out则自动加载
+" navigate using ctrl+hljk in insert mode
+" imap <C-H> <C-O>h
+" imap <C-L> <C-O>l
+" imap <C-J> <C-O>j
+" imap <C-K> <C-O>k
+" select all
+" map <C-A> ggvG<END>
+" ctrl+shift+c to copy to system paste
+map  "+y
+" save
+" you need stty stop ^@ in .bashrc
+map  <C-s> :w<CR>
+map  :w<CR>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" cscope
+" I need to autobuild the cscope database
 if has("cscope")
-	set csprg=/usr/bin/cscope
 	set csto=0
 	set cst
 	set nocsverb
@@ -95,115 +119,228 @@ if has("cscope")
 	if filereadable("cscope.out")
 		cs add cscope.out
 		" else add database pointed to by environment
-	elseif $CSCOPE_DB != ""
-		cs add $CSCOPE_DB
+	elseif filereadable("Kconfig")
+		silent !echo "Building cscope database for the kernel, it takes a long time, have a cup of coffee. Ctrl-c to bypass or touch cscope.out to fool me."
+		silent !cscope -bkRC
+		cs add cscope.out
+	elseif filereadable("CMakeLists.txt") || filereadable("Makefile") || filereadable("configure")
+		silent !echo "Building cscope database, it may take a long time, ctrl-c to bypass."
+		silent !cscope -bRC
+		cs add cscope.out
 	endif
 	set csverb
 endif
 
-"map <C-]> :cs find 3 <C-R>=expand("<cword>")<CR><CR>
 map <C-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
-map <C-[> :cs find 3 <C-R>=expand("<cword>")<CR><CR>
-map <C-F8> :!cscope -ubqRC<CR>:cs kill 0<CR>:cs add cscope.out<CR>
+map  :cs find 3 <C-R>=expand("<cword>")<CR><CR>
+"map  :vimgrep <C-R>=expand("<cword>")<CR> **/**.c **/**.h **/**.cpp <CR>
+map  :Ack -i <C-R>=expand("<cword>")<CR> <CR>
+map <F8> :!cscope -bRC<CR>:cs kill 0<CR>:cs add cscope.out<CR>
 	"重建cscope.out，断开原有cscope连接并建立新的连接
 	"-u 无条件重建，假设所有文件都发生了改变
 	"-b build the cross-reference only
 	"-q make it faster
 	"-R recurse subdirs
 	"-C ignore letter case when searching
-
-"有趣的用法
-":X 设置密码
-":set key=(空) 取消密码
-
-" for vimgdb
-"if version > 701
-"	set previewheight=1
-"	run macros/gdb_mappings.vim
-"	set asm=0
-"	set gdbprg=gdb
-"endif
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " for python completion
-python << EOF
-import os
-import sys
-import vim
-for p in sys.path:
-	if os.path.isdir(p):
-		vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
-EOF
+"python << EOF
+"import os
+"import sys
+"import vim
+"for p in sys.path:
+"    if os.path.isdir(p):
+"        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+"EOF
 
-"completion
-autocmd FileType c set omnifunc=ccomplete#Complete
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType ada set omnifunc=adacomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType phtml set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType ruby set omnifunc=rubycomplete#Completeruby
-autocmd FileType sql set omnifunc=sqlcomplete#Completesql
-
-"my snippets
-autocmd FileType java Snippet ,o System.out.println(<{}>);<CR><{}>
-autocmd FileType python Snippet forr for <{}> in range(<{}>):<CR><{}>
-autocmd FileType python Snippet pyutf8 #!/usr/bin/env python<CR># -*- coding:utf8 -*-<CR><CR><{}>
-autocmd FileType python Snippet utf8 # -*- coding:utf8 -*-<CR><CR><{}>
-
-autocmd FileType cpp Snippet pojcpp #include <iostream><CR>using namespace std;<CR><CR>int main()<CR>{<CR><{}><CR><BS>return 0;<CR>}<CR>
-autocmd FileType c Snippet pojc #include "stdio.h"<CR><CR>int main()<CR>{<CR><{}><CR><BS>return 0;<CR>}<CR>
-" for django
-autocmd FileType htmldjango Snippet block {% block <{}> %}<CR><CR>{% endblock %}
-" for php and phtml
-autocmd FileType php Snippet foreach foreach (<{}>) {<CR><CR>}
-autocmd FileType phtml Snippet foreach <?php foreach (<{}>):?><CR><?php endforeach;?>
-autocmd FileType php Snippet getpost $this->_request->getPost<{}>
-autocmd FileType php Snippet getquery $this->_request->getQuery<{}>
-autocmd FileType phtml Snippet if <?php if (<{}>):?><CR><?php endif;?>
-autocmd FileType php Snippet if if (<{}>) {<CR><CR>}
-"run and debug python program
-autocmd FileType python map <F5> :w<CR>:!python %<CR>
-autocmd FileType python map <F6> :w<CR>:!pdb %<CR>
-
-"remove trailing whitespaces when saving
-autocmd BufWritePre *.py normal m`:%s/\s\+$//e ''
-autocmd BufWritePre *.php :%s/\s\+$//e
-autocmd BufWritePre *.phtml :%s/\s\+$//e
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" completion methods 
+"autocmd FileType c set omnifunc=ccomplete#Complete
+"autocmd FileType python set omnifunc=pythoncomplete#Complete
+"autocmd FileType ada set omnifunc=adacomplete#Complete
+"autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType phtml set omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+"autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+"autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+"autocmd FileType ruby set omnifunc=rubycomplete#Completeruby
+"autocmd FileType sql set omnifunc=sqlcomplete#Completesql
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-"autocmd FileType c :set foldmethod=syntax
-autocmd FileType python setlocal expandtab smarttab shiftwidth=4 softtabstop=4 smartindent
-autocmd FileType html,phtml setlocal expandtab smarttab shiftwidth=4 softtabstop=4 smartindent
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" remove trailing whitespaces when saving
+" autocmd FileType c,cpp,java,php,javascript,python,twig,xml,yml,gcl,borg,jsont autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+"autocmd BufWritePre *.py normal m`:%s/\s\+$//e ''
+"autocmd BufWritePre *.php :%s/\s\+$//e
+"autocmd BufWritePre *.phtml :%s/\s\+$//e
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-let g:sql_type_default = 'mysql'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" tab width 
+autocmd FileType python setlocal expandtab smarttab shiftwidth=2 softtabstop=2 smartindent
+autocmd FileType html,phtml setlocal expandtab smarttab shiftwidth=2 softtabstop=2 smartindent
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "NERDTree 
 let NERDTreeMouseMode=2
 let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.pyc$', '\cscope.*$']
+let NERDTreeIgnore=['\.pyc$', '\cscope.*$', '\.o$', '\~$']
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let loaded_matchit=1
 
-function! PhpParseExecute()
-    " Parse and execute current php file
-    setlocal makeprg=php -l
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" neocomplcache 
+"follow the setting examples from official site 
+" Launches neocomplcache automatically on vim startup.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Use camel case completion.
+let g:neocomplcache_enable_camel_case_completion = 1
+" Use underscore completion.
+let g:neocomplcache_enable_underbar_completion = 1
+" Sets minimum char length of syntax keyword.
+let g:neocomplcache_min_syntax_length = 2
+" buffer file name pattern that locks neocomplcache. e.g. ku.vim or fuzzyfinder 
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
-    " Set shellpipe
-    setlocal shellpipe=>
+" Define file-type dependent dictionaries.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+    \ }
 
-    " Use error format for parsing PHP error output
-    setlocal errorformat=%m\ in\ %f\ on\ line\ %l
-    make %
-    clist
+" Define keyword, for minor languages
+if !exists('g:neocomplcache_keyword_patterns')
+  let g:neocomplcache_keyword_patterns = {}
+endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+
+let g:neocomplcache_enable_auto_select = 0
+
+" Plugin key-mappings.
+" inoremap <expr><C-l>     neocomplcache#complete_common_string()
+let g:neocomplcache_enable_auto_select=0
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <expr><CR>  pumvisible() ? neocomplcache#smart_close_popup() : "\<CR>"
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+" inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+"inoremap <expr><C-e>  neocomplcache#complete_common_string()
+
+" Enable heavy omni completion, which require computational power and may stall the vim. 
+if !exists('g:neocomplcache_omni_patterns')
+  let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
+let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
+
+" fix conflict with clangcomplete
+let g:neocomplcache_force_overwrite_completefunc = 1
+let g:clang_complete_auto = 1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" snippets
+" barely used so comment out
+" autocmd FileType BUILD Snippet sv xxx
+"autocmd FileType java Snippet ,o System.out.println(<{}>);<CR><{}>
+"autocmd FileType python Snippet forr for <{}> in range(<{}>):<CR><{}>
+"autocmd FileType python Snippet pyutf8 #!/usr/bin/env python<CR># -*- coding:utf8 -*-<CR><CR><{}>
+"autocmd FileType python Snippet utf8 # -*- coding:utf8 -*-<CR><CR><{}>
+"
+"autocmd FileType cpp Snippet pojcpp #include <iostream><CR>using namespace std;<CR><CR>int main()<CR>{<CR><{}><CR><BS>return 0;<CR>}<CR>
+"autocmd FileType c Snippet pojc #include "stdio.h"<CR><CR>int main()<CR>{<CR><{}><CR><BS>return 0;<CR>}<CR>
+" for django
+"autocmd FileType htmldjango Snippet block {% block <{}> %}<CR><CR>{% endblock %}
+" for php and phtml
+"autocmd FileType php Snippet foreach foreach (<{}>) {<CR><CR>}
+"autocmd FileType phtml Snippet foreach <?php foreach (<{}>):?><CR><?php endforeach;?>
+"autocmd FileType php Snippet getpost $this->_request->getPost<{}>
+"autocmd FileType php Snippet getquery $this->_request->getQuery<{}>
+"autocmd FileType phtml Snippet if <?php if (<{}>):?><CR><?php endif;?>
+"autocmd FileType php Snippet if if (<{}>) {<CR><CR>}
+"run and debug python program
+"autocmd FileType python map <F5> :w<CR>:!python %<CR>
+"autocmd FileType python map <F6> :w<CR>:!pdb %<CR>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has("persistent_undo")
+	set undodir=$HOME/.undotree
+	set undofile
+	set undolevels=1000
+	set undoreload=10000
+endif
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! StripTrailingWhitespace()
+	" To disable the stripping of whitespace, add the following to your
+	" .vimrc.local file:
+	" let g:spf13_keep_trailing_whitespace = 1
+	if !exists('g:spf13_keep_trailing_whitespace')
+		" Preparation: save last search, and cursor position.
+		let _s=@/
+		let l = line(".")
+		let c = col(".")
+		" do the business:
+		%s/\s\+$//e
+		" clean up: restore previous search history, and cursor position
+		let @/=_s
+		call cursor(l, c)
+	endif
 endfunction
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-map <F6> :call PhpParseExecute()<CR>
-imap <F6> <ESC>:call PhpParseExecute()<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" powerline
+"set term=mac-ansi
+"let g:Powerline_symbols = 'fancy'
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"if filereadable($VIRTUAL_ENV . '/.vimrc')
-"	source $VIRTUAL_ENV/.vimrc
-"endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" solarized
+syntax enable
+set background=dark
+set t_Co=256
+let g:solarized_termcolors=256
+colorscheme solarized
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""
+" for eclim and neocomplcache 
+"
+let g:EclimCompletionMethod = 'omnifunc'
+
+if !exists('g:neocomplcache_force_omni_patterns')
+  let g:neocomplcache_force_omni_patterns = {}
+endif
+let g:neocomplcache_force_omni_patterns.java = '\k\.\k*'
+
+hi SpecialKey ctermfg=1 guifg=gray
+
+autocmd FileType proto set colorcolumn=80
+
+let g:LargeFile=10
+
+" ultisnip
+let g:UltiSnipsExpandTrigger="<tab>"

@@ -1,0 +1,5 @@
+stty stop ^@ 
+alias svndiff="svn diff -x --ignore-eol-style -x --ignore-all-space > /tmp/svndiffforvim.diff && vim /tmp/svndiffforvim.diff"
+
+HISTSIZE=100000
+HISTFILESIZE=2000000

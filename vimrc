@@ -1,4 +1,6 @@
 call pathogen#infect()
+let g:pathogen_disabled = []
+call add(g:pathogen_disabled, 'ultisnips')
 
 " map CTRL-E to end-of-line (insert mode)
 imap <C-e> <esc>$i<right>
@@ -339,6 +341,9 @@ let g:neocomplcache_force_omni_patterns.java = '\k\.\k*'
 hi SpecialKey ctermfg=1 guifg=gray
 
 autocmd FileType proto set colorcolumn=80
+" unclear where textwidth for txt is set, overriding it here.
+autocmd FileType text set textwidth=0
+autocmd FileType gitcommit set textwidth=0
 
 let g:LargeFile=10
 

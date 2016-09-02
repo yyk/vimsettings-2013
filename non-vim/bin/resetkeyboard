@@ -1,0 +1,53 @@
+#!/bin/zsh
+sudo rm /var/lib/xkb/*.xkm
+setxkbmap us-yyk
+sudo setxkbmap -option "caps:swapescape"
+xset r rate 250 70
+
+exit
+xmodmap ~/.xmodmap.original
+
+xmodmap -e "keysym Alt_R = Mode_switch"
+#xmodmap -e "keysym Escape = Mode_switch"
+xmodmap -e "clear lock" #disable caps lock switch
+xmodmap -e "keysym Caps_Lock = Escape" #set caps_lock as escape
+xmodmap -e "keycode 118 =" #disable Insert
+# to re-enable
+# xmodmap -e "keycode 118 = Insert"
+xmodmap -e "keycode 43 = h H Left H h H"
+xmodmap -e "keycode 44 = j J Down J j J"
+xmodmap -e "keycode 45 = k K Up K k K"
+xmodmap -e "keycode 46 = l L Right L l L"
+xmodmap -e "keycode 60 = period greater Next greater period greater"
+xmodmap -e "keycode 59 = comma less Prior less comma less comma less"
+xmodmap -e "keycode 38 = a A Home A a A"
+xmodmap -e "keycode 26 = e E End E e E"
+xmodmap -e "keycode 22 = BackSpace BackSpace Delete BackSpace BackSpace BackSpace BackSpace BackSpace"
+xmodmap -e "keycode 127 = Menu Menu"
+xmodmap -e "keycode 40 = d D Delete D d D"
+
+exit
+xmodmap -e "keycode 116 = Pause Pause Pause" # Down
+xmodmap -e "keycode 111 = Pause Pause Pause" # Up
+xmodmap -e "keycode 113 = Pause Pause Pause" # Left
+xmodmap -e "keycode 114 = Pause Pause Pause" # Right
+xmodmap -e "keycode 114 = Pause Pause Pause" # Right
+xmodmap -e "keycode 117 = Pause Pause Pause" # PgDn (Next)
+xmodmap -e "keycode 112 = Pause Pause Pause" # PgUp (Prior)
+xmodmap -e "keycode 110 = Pause Pause Pause" # Home
+xmodmap -e "keycode 115 = Pause Pause Pause" # End
+xmodmap -e "keycode 119 = Pause Pause Pause" # Delete
+
+#sudo cpufreq-set -c 0 -f 3.2Ghz
+#sudo cpufreq-set -c 1 -f 3.2Ghz
+#sudo cpufreq-set -c 2 -f 3.2Ghz
+#sudo cpufreq-set -c 3 -f 3.2Ghz
+#sudo cpufreq-set -c 4 -f 3.2Ghz
+#sudo cpufreq-set -c 5 -f 3.2Ghz
+#sudo cpufreq-set -c 6 -f 3.2Ghz
+#sudo cpufreq-set -c 7 -f 3.2Ghz
+#sudo cpufreq-set -c 8 -f 3.2Ghz
+#sudo cpufreq-set -c 9 -f 3.2Ghz
+#sudo cpufreq-set -c 10 -f 3.2Ghz
+#sudo cpufreq-set -c 11 -f 3.2Ghz
+#

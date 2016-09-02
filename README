@@ -3,7 +3,9 @@ For clangcomplete, need libclang.
 
 git clone https://github.com/yyk/vimsettings-2013.git ~/.vim && \
   echo "source ~/.vim/vimrc" >> ~/.vimrc && \
-  sh ~/.vim/updateall.sh
-
-zsh:
-  ln -s ~/.vim/non-vim/zsh/apple2.zsh-theme ~/.oh-my-zsh/themes/apple2.zsh-theme
+  ln -s ~/.vim/vimrc ~/.vimrc
+  ln -s ~/.vim/non-vim/zsh/apple2.zsh-theme ~/.oh-my-zsh/themes/apple2.zsh-theme && \
+  ln -s ~/.vim/non-vim/zsh/zshrc ~/.zshrc && \
+  ln -s ~/.vim/non-vim/tmux/tmux.conf ~/.tmux.conf && \
+  ln -s ~/.vim/non-vim/i3/config ~/.i3/config && \
+  ln -s ~/.vim/non-vim/i3/i3status.conf .i3status.conf

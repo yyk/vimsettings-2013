@@ -1,0 +1,40 @@
+# Path to your oh-my-zsh configuration.
+ZSH=$HOME/.oh-my-zsh
+
+ZSH_THEME="apple2"
+# Uncomment following line if you want red dots to be displayed while waiting for completion
+COMPLETION_WAITING_DOTS="true"
+zstyle ':completion:*' hosts off
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse z)
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+# Customize to your needs...
+HISTSIZE=10000000
+export PATH=$PATH:/usr/lib/google-golang/bin:/usr/local/buildtools/java/jdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/build/static/projects/vex:/usr/local/google/home/yyk/bin:/usr/local/google/home/yyk/bin/git-yyk
+
+eval "$(echo "_orig_git_prompt_info() {"; declare -f git_prompt_info | tail -n +2)"
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[magenta]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[green]%}!"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[green]%}?"
+ZSH_THEME_GIT_PROMPT_CLEAN=""
+git_prompt_info() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
+}
+unsetopt correct_all
+
+bindkey '^R' history-incremental-pattern-search-backward
+
+alias tmux="tmux -2"
+
+source ~/.zshrc.google

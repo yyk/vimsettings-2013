@@ -1,6 +1,0 @@
-cscope
-libclang-dev
-clang
-python
-exuberant-ctags
-pyflakes

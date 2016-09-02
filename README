@@ -1,0 +1,9 @@
+For taglist, need ctags, which is included in cscope.
+For clangcomplete, need libclang.
+
+git clone https://github.com/yyk/vimsettings-2013.git ~/.vim && \
+  echo "source ~/.vim/vimrc" >> ~/.vimrc && \
+  sh ~/.vim/updateall.sh
+
+zsh:
+  ln -s ~/.vim/non-vim/zsh/apple2.zsh-theme ~/.oh-my-zsh/themes/apple2.zsh-theme

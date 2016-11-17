@@ -183,7 +183,7 @@ map <F8> :!cscope -bRC<CR>:cs kill 0<CR>:cs add cscope.out<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " tab width 
-autocmd FileType python setlocal expandtab smarttab shiftwidth=2 softtabstop=2 smartindent
+autocmd FileType python setlocal expandtab smarttab shiftwidth=4 softtabstop=4 smartindent
 autocmd FileType html,phtml setlocal expandtab smarttab shiftwidth=2 softtabstop=2 smartindent
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -349,3 +349,5 @@ let g:LargeFile=10
 
 " ultisnip
 let g:UltiSnipsExpandTrigger="<tab>"
+
+let g:pymode_python = 'python3'
